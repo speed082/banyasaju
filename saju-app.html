@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>반야사주</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--hanji:#f3e8ce;--paper:#fcf8ec;--ink:#2d2820;--ink-soft:#6f6147;--jade:#1d7a5e;--gold:#a8801f;--ju:#b5402f;--navy:#2c3a52;--serif:'Nanum Myeongjo',serif;--batang:'Gowun Batang',serif;}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;font-family:var(--batang);color:var(--ink);background:radial-gradient(ellipse at top,#faf4e6,#f3e8ce 58%,#ead8b4) fixed;display:flex;justify-content:center;}
+  #app{width:100%;max-width:560px;min-height:100vh;padding:28px 20px 60px;}
+  .eyebrow{text-align:center;color:var(--jade);letter-spacing:.3em;font-size:12px;margin-bottom:9px;}
+  .dancheong{height:3px;width:118px;margin:0 auto 20px;border-radius:2px;background:linear-gradient(90deg,var(--jade) 0 34%,var(--ju) 34% 67%,var(--gold) 67% 100%);}
+  h1{font-family:var(--serif);font-weight:800;font-size:21px;text-align:center;margin:0 0 20px;}
+  .card{background:var(--paper);border:1px solid rgba(45,40,32,.16);border-radius:16px;padding:18px;margin-bottom:16px;}
+  .card h2{font-family:var(--serif);font-weight:700;font-size:15px;margin:0 0 13px;}
+  label{font-family:var(--serif);font-size:13px;display:block;margin:0 0 6px;}
+  .row{display:flex;gap:8px;align-items:flex-end;}
+  .row>div{flex:1;}
+  input,select{width:100%;padding:11px;border:1px solid rgba(45,40,32,.22);border-radius:10px;background:#fffdf6;color:var(--ink);font-family:var(--batang);font-size:15px;}
+  input:focus,select:focus{outline:none;border-color:var(--jade);}
+  button{font-family:var(--serif);font-weight:700;cursor:pointer;border:none;border-radius:10px;}
+  .btn{padding:12px 16px;background:var(--jade);color:#fbf6e6;font-size:15px;}
+  .btn:disabled{opacity:.4;cursor:not-allowed;}.btn:active:not(:disabled){transform:scale(.98);}
+  .btn-ghost{background:#eef2ec;color:var(--ink-soft);}
+  .seg{display:flex;gap:7px;}.seg .sg{flex:1;padding:11px;border:1px solid rgba(45,40,32,.18);border-radius:10px;background:var(--paper);text-align:center;font-family:var(--serif);font-size:15px;cursor:pointer;}
+  .seg .sg.on{border-color:var(--jade);background:#eef6f0;color:var(--jade);}
+  .field{margin-bottom:13px;}
+  .status{display:flex;align-items:center;gap:9px;margin-top:12px;font-size:14px;font-family:var(--serif);}
+  .dot{width:12px;height:12px;border-radius:50%;background:#c8bca0;flex:none;}
+  body>#dot{position:absolute;left:0;top:0;z-index:100;}
+  .dot.on{background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.2);}.dot.off{background:#e0524d;box-shadow:0 0 0 4px rgba(224,82,77,.18);}.dot.wait{background:var(--gold);animation:pulse 1s infinite;}
+  @keyframes pulse{50%{opacity:.35;}}
+  .hint{font-size:11.5px;color:var(--ink-soft);margin-top:9px;line-height:1.6;}
+  /* 명식 */
+  #myeongsik{margin-top:14px;display:none;}
+  .ms-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;text-align:center;background:#fffdf6;border-radius:11px;padding:12px 8px;}
+  .ms-grid .lab{font-family:var(--serif);font-size:11px;color:var(--ink-soft);margin-bottom:5px;}
+  .ms-grid .gan,.ms-grid .ji{font-family:var(--serif);font-weight:800;font-size:23px;line-height:1.2;}
+  .ms-grid .pil.self{background:#eef6f0;border-radius:9px;}
+  .ms-meta{font-size:12.5px;color:var(--ink-soft);line-height:1.85;margin-top:11px;}
+  .ms-meta b{color:var(--ink);font-family:var(--serif);}
+  .ms-daeun{font-size:12px;color:var(--ink-soft);margin-top:7px;line-height:1.7;word-break:keep-all;}
+  .e-목{color:#0f7a2e;background:#dcf5e2;}.e-화{color:#d11a1a;background:#ffe0dc;}.e-토{color:#9a6400;background:#fff0c2;}.e-금{color:#3d4452;background:#e6e9ef;}.e-수{color:#0b3ea8;background:#dbe7ff;}
+  .ms-chart .gan,.ms-chart .ji,.ms-grid .gan,.ms-grid .ji{border-radius:10px;padding:2px 0;margin:3px 4px;}
+  .personas{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
+  .pbtn{padding:11px 8px;border:1px solid rgba(45,40,32,.18);border-radius:11px;background:#fffdf6;text-align:center;font-family:var(--serif);font-size:14px;cursor:pointer;}
+  .pbtn.on{border:2px solid var(--jade);background:#eef6f0;color:var(--jade);}.pbtn small{display:block;font-family:var(--batang);font-weight:400;font-size:10.5px;color:var(--ink-soft);margin-top:2px;}
+  #reading{font-family:var(--batang);font-size:19px;line-height:1.85;margin-top:16px;}
+  .free-read,.paid-read,.fu{white-space:pre-wrap;}
+  .paywall{border:1.5px solid var(--gold);border-radius:16px;background:#fffdf6;padding:18px;margin-top:18px;}
+  .pw-say{font-family:var(--serif);font-size:15px;line-height:1.9;margin:0 0 15px;text-align:center;}.pw-say b{color:var(--ju);}
+  .doors{display:flex;flex-direction:column;gap:11px;}
+  .door{border:1px solid rgba(45,40,32,.18);border-radius:13px;background:var(--paper);padding:14px;}.door.best{border:2px solid var(--gold);}
+  .door .badge{display:inline-block;font-family:var(--serif);font-size:11px;color:#fbf6e6;background:var(--gold);border-radius:13px;padding:3px 10px;margin-bottom:6px;}
+  .door .dn{font-family:var(--serif);font-weight:800;font-size:16px;}
+  .door .dl{list-style:none;padding:0;margin:8px 0 9px;}.door .dl li{font-size:12.5px;color:var(--ink-soft);line-height:1.75;padding-left:13px;position:relative;}.door .dl li::before{content:'·';color:var(--jade);position:absolute;left:3px;font-weight:800;}.door .dl li b{color:var(--ink);}
+  .door .price{font-family:var(--serif);font-weight:800;font-size:17px;color:var(--ju);text-align:right;}
+  .paidtest-label{margin:18px 0 8px;text-align:center;color:var(--ink-soft);font-size:11px;}
+  .paid-read{background:#f6efda;border-radius:10px;padding:13px 14px;color:#8a7a55;}
+  .fudiv{margin:16px 0 7px;text-align:center;color:var(--ink-soft);font-size:12px;}
+  .fu{font-size:14px;color:var(--jade);}
+  .note{margin-top:22px;text-align:center;color:#a8966f;font-size:11px;line-height:1.7;}
+</style>
+</head>
+<body>
+<style>
+  .phone{width:100%;max-width:430px;margin:0 auto;position:relative;background:#f3e8ce;min-height:100vh;}
+  .screen{display:none;} .screen.active{display:block;}
+  .imgscreen{position:relative;line-height:0;} .imgscreen>img{width:100%;display:block;}
+  .hot{position:absolute;cursor:pointer;background:transparent;}
+  .vis-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+  .fbg{min-height:100vh;background:radial-gradient(ellipse at top,#faf4e6,#f3e8ce 60%,#ead8b4);padding:30px 22px 48px;}
+  .dch{height:3px;width:118px;margin:0 auto 18px;border-radius:2px;background:linear-gradient(90deg,#1d7a5e 0 34%,#b5402f 34% 67%,#a8801f 67% 100%);}
+  .ftitle{font-family:'Nanum Myeongjo',serif;font-weight:800;font-size:22px;text-align:center;color:#2d2820;margin:0 0 6px;}
+  .fsub{text-align:center;color:#6f6147;font-size:13px;margin:0 0 22px;line-height:1.6;}
+  .ff{margin:0 0 16px;} .ff>label{font-family:'Nanum Myeongjo',serif;font-weight:700;font-size:14px;color:#2d2820;display:block;margin-bottom:7px;}
+  .phone input,.phone select{width:100%;padding:13px;border:1px solid rgba(45,40,32,.22);border-radius:11px;background:#fffdf6;color:#2d2820;font-family:'Gowun Batang',serif;font-size:16px;}
+  .catlay{position:absolute;left:0;top:0;width:100%;aspect-ratio:941/1672;}
+  .catcard{position:absolute;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 3px;border-radius:12px;border:1.5px solid #c9a44e;background:linear-gradient(180deg,#fffdf4,#f6ead0);box-shadow:0 2px 6px rgba(90,60,20,.18);cursor:pointer;text-align:center;}
+  .catcard b{font-family:'Nanum Myeongjo',serif;font-weight:900;font-size:20px;color:#2a1d10;line-height:1.1;}
+  .catcard img{width:36px;height:36px;}
+  .catcard small{font-size:12.5px;font-weight:700;color:#3d2f1c;line-height:1.25;word-break:keep-all;}
+  .catcard:active{transform:scale(.97);}
+  .catcard.catwide{flex-direction:row;gap:10px;justify-content:flex-start;padding:4px 14px;}
+  .catcard.catwide b{white-space:nowrap;flex:none;}
+  .catcard.catwide small{text-align:left;font-size:12px;}
+  .catcard.catwide span{display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-width:0;}
+  .catcard.catwide{gap:7px;padding:4px 8px;}
+  .catcard.catwide img{width:34px;height:34px;flex:none;}
+  .catcard.catwide b{font-size:18px;}
+  .sibox{width:100%;padding:14px 16px;border:1px solid rgba(45,40,32,.18);border-radius:11px;background:#fffdf6;text-align:left;font-family:'Nanum Myeongjo',serif;font-weight:700;font-size:16px;color:#6f6147;cursor:pointer;}
+  .sibox.on{color:#2d2820;border-color:#1f6b4a;background:#eef7f0;}
+  .sigrid{display:none;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px;}
+  .sigrid.open{display:grid;}
+  .sigrid button{padding:11px 4px;border:1px solid rgba(45,40,32,.18);border-radius:10px;background:#fcf8ec;font-family:'Nanum Myeongjo',serif;cursor:pointer;line-height:1.25;}
+  .sigrid button b{display:block;font-size:17px;color:#2d2820;}
+  .sigrid button small{display:block;font-size:11.5px;color:#8a7a5c;margin-top:2px;}
+  .sigrid button.on{border-color:#1f6b4a;background:#eef7f0;}
+  .sigrid button.unk{grid-column:1/-1;}
+  .two{display:flex;gap:10px;align-items:center;} .gbtn{flex:1;padding:14px;border:1px solid rgba(45,40,32,.18);border-radius:11px;background:#fcf8ec;text-align:center;font-family:'Nanum Myeongjo',serif;font-weight:700;font-size:16px;cursor:pointer;}
+  .gbtn.on{border-color:#1d7a5e;background:#eef6f0;color:#1d7a5e;}
+  .row3{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:9px;}
+  .bigcta{display:block;width:100%;margin-top:16px;padding:16px;border:none;border-radius:13px;cursor:pointer;font-family:'Nanum Myeongjo',serif;font-weight:700;font-size:17px;color:#fbf6e6;background:linear-gradient(180deg,#c0392b,#9a2d22);}
+  .bigcta:active{transform:scale(.99);}
+  .rbg{min-height:100vh;background:radial-gradient(ellipse at top,#faf4e6,#f3e8ce 60%,#ead8b4);padding:24px 20px 48px;}
+  .loadbox{text-align:center;color:#8a6f3a;font-family:'Nanum Myeongjo',serif;font-size:16px;padding:70px 10px;line-height:1.9;}
+  .rmeta{text-align:center;color:#6f6147;font-size:12.5px;margin-bottom:14px;}.rmeta b{color:#b5402f;font-family:'Nanum Myeongjo',serif;}
+  .rd-img{display:block;width:calc(100% + 40px);margin:26px -20px 0;aspect-ratio:16/10;object-fit:cover;}
+  .rd-img.mid{margin:22px -20px 22px;}
+  .rd-head{font-family:'Nanum Myeongjo',serif;font-weight:800;font-size:23px;color:#a3301f;text-align:center;margin:24px 0 12px;}
+  .rd-head::before,.rd-head::after{content:'❖';color:#a8801f;font-size:11px;margin:0 8px;vertical-align:2px;}
+  .rd-body{white-space:pre-wrap;font-family:'Nanum Myeongjo',serif;font-size:19px;line-height:1.85;color:#000;font-weight:800;-webkit-text-stroke:.3px #000;}
+  .ms-chart{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;background:#fffdf6;border:1px solid rgba(45,40,32,.16);border-radius:13px;padding:14px 8px;margin:2px 0 14px;}
+  .ms-chart .pil{text-align:center;} .ms-chart .lab{font-family:'Nanum Myeongjo',serif;font-size:15px;font-weight:700;color:#3d3320;margin-bottom:5px;} .ms-chart .gan,.ms-chart .ji{font-family:'Nanum Myeongjo',serif;font-weight:900;font-size:36px;line-height:1.25;} .ms-chart .pil.self{background:#f6efda;border-radius:9px;}
+  .oh-graph{display:flex;gap:8px;justify-content:center;align-items:flex-end;background:#fffdf6;border:1px solid rgba(45,40,32,.16);border-radius:13px;padding:14px 10px 11px;margin:2px 0 14px;}
+  .ohb{flex:1;text-align:center;} .ohb-bar-wrap{height:62px;display:flex;align-items:flex-end;justify-content:center;} .ohb-bar{width:58%;min-height:4px;border-radius:4px 4px 0 0;}
+  .ohb-lab{font-family:'Nanum Myeongjo',serif;font-size:12.5px;margin-top:5px;font-weight:700;}
+  /* ── 선생님 선택 화면 ── */
+  .selbg{min-height:100vh;background:radial-gradient(ellipse at top,#faf4e6,#f3e8ce 60%,#ead8b4);padding-bottom:8px;}
+  .seltop{display:flex;align-items:center;justify-content:space-between;padding:13px 16px 10px;}
+  .seltop .t{font-family:'Nanum Myeongjo',serif;font-weight:800;font-size:17px;color:#2d2820;}
+  .seltop .ic{font-size:19px;color:#9a7d4a;width:24px;text-align:center;}
+  .selband{height:7px;background:linear-gradient(90deg,#1d7a5e,#b5402f 50%,#a8801f);}
+  .selhead{text-align:center;padding:19px 22px 4px;}
+  .selhead h1{font-family:'Nanum Myeongjo',serif;font-weight:800;font-size:21px;color:#2d2820;margin:0 0 7px;line-height:1.35;}
+  .selhead p{color:#6f6147;font-size:13px;margin:0;}
+  .selwrap{padding:12px 16px 0;}
+  .recbadge{display:inline-block;font-family:'Nanum Myeongjo',serif;font-size:11.5px;color:#fbf6e6;background:linear-gradient(180deg,#c0392b,#9a2d22);border-radius:13px;padding:4px 13px;margin:6px 0 9px;}
+  .feat{display:flex;gap:13px;align-items:center;background:linear-gradient(180deg,#fffdf6,#fbf3df);border:1.5px solid #c9a44e;border-radius:17px;padding:13px;cursor:pointer;box-shadow:0 4px 14px rgba(120,90,30,.13);}
+  .feat:active{transform:scale(.992);}
+  .feat .pf{flex:0 0 100px;height:122px;border-radius:13px;overflow:hidden;border:1px solid rgba(168,128,31,.5);}
+  .feat .pf img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
+  .feat .nm{font-family:'Nanum Myeongjo',serif;font-weight:800;font-size:18px;color:#b5402f;margin:0 0 3px;}
+  .feat .tt{font-family:'Nanum Myeongjo',serif;font-size:13.5px;color:#2d2820;margin:0 0 8px;}
+  .feat ul{list-style:none;padding:0;margin:0;}
+  .feat li{font-size:11.5px;color:#6f6147;line-height:1.75;padding-left:15px;position:relative;}
+  .feat li::before{content:'✦';position:absolute;left:0;color:#a8801f;font-size:10px;top:2px;}
+  .selgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:13px;}
+  .tcard{background:linear-gradient(180deg,#fffdf6,#faf2dd);border:1px solid rgba(168,128,31,.4);border-radius:15px;padding:13px 11px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;box-shadow:0 2px 8px rgba(120,90,30,.09);}
+  .tcard:active{transform:scale(.99);}
+  .tcard.soon{cursor:default;opacity:.82;}
+  .tcard .pf{width:80px;height:80px;border-radius:50%;overflow:hidden;border:2px solid #d9b86a;margin-bottom:9px;background:#efe3c6;}
+  .tcard .pf img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block;}
+  .tcard .pf.empty{display:flex;align-items:center;justify-content:center;font-size:30px;color:#bfa15a;}
+  .tcard .nm{font-family:'Nanum Myeongjo',serif;font-weight:800;font-size:15px;color:#2d2820;margin:0 0 3px;}
+  .tcard .tt{font-size:11.5px;color:#8a6f3a;line-height:1.5;margin:0 0 4px;min-height:33px;}
+  .tcard .sub{font-size:10.5px;color:#9a8866;line-height:1.5;margin:0 0 10px;min-height:30px;}
+  .tcard .pick{font-family:'Nanum Myeongjo',serif;font-size:12.5px;font-weight:700;color:#fbf6e6;background:linear-gradient(180deg,#c0392b,#9a2d22);border-radius:9px;padding:7px 0;width:100%;}
+  .tcard.soon .pick{background:#b9a888;}
+  .selnote{margin:17px 16px 0;background:linear-gradient(180deg,#7a2018,#5e1812);border-radius:13px;padding:13px 16px;text-align:center;color:#f3d9a8;font-size:12px;line-height:1.7;font-family:'Nanum Myeongjo',serif;}
+  .selnav{display:flex;justify-content:space-around;align-items:center;border-top:1px solid rgba(168,128,31,.3);margin-top:16px;padding:9px 0 6px;background:rgba(255,253,246,.55);}
+  .selnav>div{font-size:10px;color:#9a8866;text-align:center;}
+  .selnav>div .ni{display:block;font-size:16px;margin-bottom:2px;color:#b08a44;}
+  .selnav>div.cur,.selnav>div.cur .ni{color:#b5402f;}
+  /* ── 템플릿 상담실(원장 외) ── */
+  .offT{position:relative;min-height:100vh;background:radial-gradient(ellipse at top,#faf4e6,#f3e8ce 60%,#ead8b4);padding-bottom:30px;}
+  .offback{position:absolute;top:12px;left:12px;z-index:3;width:38px;height:38px;border-radius:50%;background:rgba(40,20,10,.42);color:#fff;border:none;font-size:21px;cursor:pointer;}
+  .offhero{position:relative;width:100%;aspect-ratio:1/1.12;overflow:hidden;}
+  .offhero>img,.offhero>video{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;background:#1a1008;}
+  .offhero .ov{position:absolute;left:0;right:0;bottom:0;padding:48px 18px 15px;background:linear-gradient(180deg,transparent,rgba(45,22,10,.8));}
+  .offhero .ov .nm{font-family:'Nanum Myeongjo',serif;font-weight:800;font-size:21px;color:#fff7e6;margin:0 0 3px;}
+  .offhero .ov .tt{font-size:13.5px;color:#f0dcb4;margin:0;}
+  .offbody{padding:17px 18px 0;}
+  .offfeat{background:linear-gradient(180deg,#fffdf4,#f7ebcf);border:1.5px solid #c9a44e;border-radius:18px;padding:20px 18px 18px;box-shadow:0 6px 18px rgba(90,60,20,.18);}
+  .offfeat h3{font-family:'Nanum Myeongjo',serif;font-weight:900;font-size:21px;color:#a3301f;text-align:center;margin:0 0 14px;letter-spacing:.04em;}
+  .offfeat h3::before,.offfeat h3::after{content:'✿';color:#c9a44e;font-size:15px;margin:0 8px;}
+  .offfeat ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;}
+  .offfeat li{font-family:'Nanum Myeongjo',serif;font-size:18px;font-weight:700;color:#2e2214;line-height:1.5;padding:12px 14px 12px 48px;position:relative;background:#fff;border:1px solid rgba(201,164,78,.55);border-radius:12px;}
+  .offfeat li::before{content:'';position:absolute;left:14px;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e8c66a,#a3301f);box-shadow:0 1px 4px rgba(0,0,0,.3);}
+  /* ── 상단 선생님 자동 슬라이드(신명타로식) ── */
+  #sel-slide{position:relative;width:100%;height:218px;border-radius:16px;overflow:hidden;border:1.5px solid #c9a44e;cursor:pointer;box-shadow:0 5px 16px rgba(120,90,30,.18);margin-bottom:14px;}
+  #sel-slide .ss-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 22%;opacity:0;transition:opacity .6s ease;}
+  #sel-slide .ss-img.on{opacity:1;}
+  #sel-slide .ss-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,10,4,.1),transparent 32%,transparent 52%,rgba(20,10,4,.72));}
+  #sel-slide .ss-badge{position:absolute;left:11px;top:10px;font-family:'Nanum Myeongjo',serif;font-size:11px;color:#fbf6e6;background:linear-gradient(180deg,#c0392b,#9a2d22);border-radius:11px;padding:3px 10px;box-shadow:0 1px 4px rgba(0,0,0,.25);}
+  #sel-slide .ss-cap{position:absolute;left:14px;bottom:12px;}
+  #sel-slide .ss-nm{font-family:'Nanum Myeongjo',serif;font-weight:800;font-size:19px;color:#fff7e6;text-shadow:0 1px 5px rgba(0,0,0,.65);}
+  #sel-slide .ss-tt{font-size:12.5px;color:#f4e2bc;margin-top:2px;text-shadow:0 1px 4px rgba(0,0,0,.65);}
+  #sel-slide .ss-dots{position:absolute;right:11px;bottom:14px;display:flex;gap:5px;}
+  #sel-slide .ss-dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.45);transition:background .3s;}
+  #sel-slide .ss-dots i.on{background:#ffd98a;}
+  /* ── 신명타로식 풀스크린 선생님 슬라이드 ── */
+  .sg-gate{position:relative;width:100%;height:100vh;min-height:580px;overflow:hidden;background:#100c08;}
+  .sg-stage{position:absolute;inset:0;z-index:0;}
+  .sg-slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;}
+  .sg-slide.active{opacity:1;}
+  .sg-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 18%;}
+  .sg-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.86) 0%,rgba(0,0,0,.5) 12%,transparent 30%,transparent 44%,rgba(0,0,0,.5) 63%,rgba(0,0,0,.96) 88%);}
+  .sg-brand{position:absolute;top:14px;left:0;right:0;z-index:6;text-align:center;}
+  .sg-kr{font-family:'Nanum Myeongjo',serif;font-weight:900;font-size:26px;letter-spacing:.06em;color:#ffe9ad;text-shadow:0 0 13px rgba(255,232,173,.5),0 3px 16px rgba(0,0,0,.95);}
+  .sg-lead{position:absolute;top:58px;left:0;right:0;z-index:6;text-align:center;padding:0 16px;font-family:'Nanum Myeongjo',serif;font-weight:700;font-size:clamp(14px,4.6vw,17px);color:rgba(255,246,221,.96);text-shadow:0 2px 12px rgba(0,0,0,1);}
+  .sg-lead::after{content:'';display:block;width:200px;max-width:74%;height:2px;margin:7px auto 0;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(255,224,106,.9),transparent);}
+  .sg-bottom{position:absolute;left:0;right:0;bottom:max(env(safe-area-inset-bottom),16px);z-index:6;text-align:center;padding:0 16px;}
+  .sg-name{font-family:'Gowun Batang',serif;font-weight:800;font-size:clamp(26px,7.6vw,34px);color:#fff;line-height:1.05;text-shadow:0 2px 18px rgba(0,0,0,1);margin-bottom:5px;}
+  .sg-career{font-size:clamp(12.5px,3.8vw,15px);line-height:1.35;color:#f2ead6;text-shadow:0 2px 10px rgba(0,0,0,1);margin-bottom:12px;}
+  .sg-guide{font-family:'Gowun Batang',serif;font-size:clamp(17px,5.4vw,21px);font-weight:800;color:#fff4d6;margin-bottom:11px;text-shadow:0 2px 6px rgba(0,0,0,1);}
+  .sg-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:0 auto 13px;}
+  .sg-thumb{position:relative;padding:5px 4px 7px;border:1px solid rgba(240,212,121,.34);border-radius:20px 20px 9px 9px;background:linear-gradient(180deg,rgba(60,30,18,.5),rgba(13,7,5,.82));cursor:pointer;transition:transform .3s,border-color .3s,box-shadow .3s;}
+  .sg-thumb.on{border-color:rgba(255,226,153,.96);box-shadow:0 0 0 2px rgba(240,212,121,.34),0 0 24px rgba(255,160,96,.4);}
+  .sg-thumb.on::after{content:'✓';position:absolute;right:1px;top:-6px;width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(180deg,#c84d61,#8d2438);border:1px solid rgba(255,232,173,.9);color:#fff8d6;font-size:12px;font-weight:900;}
+  .sg-pic{aspect-ratio:1/1.08;border-radius:16px 16px 5px 5px;overflow:hidden;}
+  .sg-pic img{width:100%;height:100%;object-fit:cover;object-position:50% 16%;filter:saturate(.9) brightness(.82);transition:.3s;}
+  .sg-thumb.on .sg-pic img{filter:saturate(1.05) brightness(1);}
+  .sg-lbl{margin-top:6px;font-family:'Gowun Batang',serif;font-size:clamp(11px,3.3vw,13px);line-height:1.05;color:#ffe9ad;font-weight:800;white-space:nowrap;}
+  .sg-tag{margin-top:3px;font-size:clamp(8px,2.4vw,10px);line-height:1.1;color:rgba(255,244,214,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sg-cta{width:100%;min-height:58px;padding:15px 20px;border-radius:15px;border:1.5px solid #d8b24a;background:linear-gradient(180deg,#b23227 0%,#9c2820 42%,#6c1712 100%);cursor:pointer;display:flex;align-items:center;justify-content:center;animation:sg-candle 2.8s ease-in-out infinite;}
+  .sg-cta-txt{font-family:'Nanum Myeongjo',serif;font-weight:900;font-size:clamp(18px,5.2vw,22px);color:#fff2c6;letter-spacing:.01em;text-shadow:0 2px 10px rgba(0,0,0,.9);}
+  @keyframes sg-candle{0%,100%{box-shadow:inset 0 1px 0 rgba(255,235,180,.42),0 10px 26px -10px rgba(120,20,14,.9),0 0 18px -2px rgba(255,170,80,.38);}50%{box-shadow:inset 0 1px 0 rgba(255,235,180,.52),0 12px 32px -10px rgba(150,30,18,.95),0 0 36px 2px rgba(255,190,95,.62);}}
+  /* ── 추천 카드 슬라이드(통이미지 위, 선생님별 크로스페이드) ── */
+  #feat-slide{position:absolute;left:3%;top:20.5%;width:94%;height:29.5%;z-index:3;cursor:pointer;border-radius:15px;overflow:hidden;box-shadow:0 4px 15px rgba(80,50,20,.22);}
+  #feat-slide .fs-slide{position:absolute;inset:0;opacity:0;transition:opacity .55s ease;}
+  #feat-slide .fs-slide.on{opacity:1;}
+  #feat-slide .fs-slide>img{width:100%;height:100%;object-fit:cover;display:block;}
+  #feat-slide .fs-pic{flex:0 0 36%;height:86%;border-radius:11px;overflow:hidden;border:1px solid rgba(201,162,74,.6);}
+  #feat-slide .fs-pic img{width:100%;height:100%;object-fit:cover;object-position:50% 16%;display:block;}
+  #feat-slide .fs-info{flex:1;min-width:0;}
+  #feat-slide .fs-nm{font-family:'Nanum Myeongjo',serif;font-weight:800;font-size:13px;color:#b5402f;}
+  #feat-slide .fs-tt{font-family:'Nanum Myeongjo',serif;font-weight:800;font-size:18px;color:#3a2a1d;line-height:1.12;margin:1px 0 3px;}
+  #feat-slide .fs-ex{font-size:11px;color:#a8801f;font-weight:700;margin-bottom:6px;}
+  #feat-slide .fs-bl{list-style:none;margin:0;padding:0;}
+  #feat-slide .fs-bl li{font-size:10.5px;color:#5b4f3a;line-height:1.65;padding-left:14px;position:relative;}
+  #feat-slide .fs-bl li::before{content:'✦';position:absolute;left:0;color:#c9a24a;font-size:9px;top:2px;}
+  #feat-slide .fs-badge{position:absolute;left:9px;top:8px;z-index:2;font-family:'Nanum Myeongjo',serif;font-weight:700;font-size:9.5px;color:#fff3da;background:linear-gradient(180deg,#b5402f,#8a2d20);border-radius:9px;padding:2px 9px;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+  #feat-slide .fs-dots{position:absolute;right:9px;bottom:7px;z-index:2;display:flex;gap:4px;}
+  #feat-slide .fs-dots i{width:5px;height:5px;border-radius:50%;background:rgba(120,90,40,.3);}
+  #feat-slide .fs-dots i.on{background:#c9a24a;}
+  /* ── 화면 꾸미기(단청·연꽃 장식) — 사진은 안 건드리고 테두리만 얹음 ── */
+  .deco-screen{position:relative;}
+  .deco-crown{position:absolute;top:0;left:0;width:100%;height:auto;z-index:2;pointer-events:none;}
+  .deco-divider{display:block;width:74%;max-width:280px;margin:2px auto 20px;pointer-events:none;}
+  /* ── 선생님 선택(신명식 재구성): 상단 단청 + 페이드 히어로 + 2×2 카드 ── */
+  #s-select{background:#160f07;}
+  .nsel{min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#2c1f12,#180f07 72%);display:flex;flex-direction:column;align-items:center;padding:0 14px 20px;box-sizing:border-box;}
+  .nsel-crown{width:100%;max-width:none;display:block;margin-bottom:1px;pointer-events:none;}
+  .nsel-hall{width:calc(100% + 28px);margin:0 -14px 8px;aspect-ratio:16/10;object-fit:cover;object-position:50% 62%;display:block;}
+  .nsel-crownwrap{position:relative;width:100%;}
+  .nsel-brand{position:absolute;left:0;right:0;top:68%;transform:translateY(-50%);text-align:center;font-family:'Nanum Myeongjo',serif;font-weight:900;font-size:26px;letter-spacing:.06em;color:#ffe9ad;text-shadow:0 0 13px rgba(255,232,173,.5),0 3px 16px rgba(0,0,0,.95);}
+  .nsel-lead{font-family:'Nanum Myeongjo',serif;font-size:13.5px;color:#e7d4ab;margin:5px 0 11px;text-align:center;}
+  .nsel-hero{position:relative;width:100%;flex:0 0 auto;aspect-ratio:12/17;min-height:236px;border-radius:18px;overflow:hidden;border:1.5px solid #c9a44e;box-shadow:0 8px 26px rgba(0,0,0,.55);}
+  .nsel-slides{position:absolute;inset:0;}
+  .nsel-slide{position:absolute;inset:0;opacity:0;transition:opacity .65s ease;}
+  .nsel-slide.on{opacity:1;}
+  .nsel-slide img,.nsel-slide video{width:100%;height:100%;object-fit:cover;object-position:50% 14%;display:block;}
+  .nsel-tap{position:absolute;right:22px;top:52%;margin-top:-22px;width:44px;height:44px;pointer-events:none;z-index:2;}
+  .nsel-tap b{position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:#ffe9ad;box-shadow:0 0 10px 3px rgba(255,214,120,.85);animation:nsel-dot 1.6s ease-in-out infinite;}
+  .nsel-tap i{position:absolute;inset:0;border-radius:50%;border:2.5px solid #ffe2a0;opacity:0;animation:nsel-ring 1.6s ease-out infinite;}
+  .nsel-tap i+i{animation-delay:.8s;}
+  @keyframes nsel-ring{0%{transform:scale(.3);opacity:.95;}100%{transform:scale(1.35);opacity:0;}}
+  @keyframes nsel-dot{0%,100%{transform:scale(1);}50%{transform:scale(.75);}}
+  .nsel-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,10,4,.04) 40%,rgba(18,9,4,.9));}
+  .nsel-cap{position:absolute;left:0;right:0;bottom:13px;text-align:center;padding:0 12px;}
+  .nsel-name{font-family:'Gowun Batang','Nanum Myeongjo',serif;font-weight:800;font-size:27px;color:#fff;text-shadow:0 2px 13px rgba(0,0,0,.95);}
+  .nsel-career{font-size:13px;color:#f3e3bd;margin-top:3px;text-shadow:0 2px 9px rgba(0,0,0,.95);}
+  .nsel-intro{font-family:'Nanum Myeongjo',serif;font-size:13px;color:#ffe1a8;margin-top:7px;line-height:1.4;text-shadow:0 2px 9px rgba(0,0,0,.95);}
+  .nsel-intro::before{content:'❖ ';color:#e0b85e;font-size:11px;}
+  .nsel-thumbs{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%;margin:12px 0 14px;}
+  /* 원본 카드 느낌: 크림 카드 + 단청 윗띠 + 큰 인물 사진 + 진빨강 이름 */
+  .nsel-thumb{position:relative;display:flex;align-items:stretch;gap:9px;padding:9px;border-radius:14px;border:1px solid rgba(168,128,31,.55);background:linear-gradient(180deg,#fffdf6,#f4e8cc);overflow:hidden;cursor:pointer;box-shadow:0 3px 11px rgba(0,0,0,.38);transition:border-color .25s,box-shadow .25s,transform .15s;}
+  /* 단청 — 윗띠가 아니라 양쪽 위 모서리에만 살짝 (원본처럼) */
+  .nsel-thumb:active{transform:scale(.985);}
+  .nsel-thumb.on{border-color:#c9992f;box-shadow:0 0 0 2px rgba(201,153,47,.5),0 5px 16px rgba(120,80,20,.32);}
+  .nsel-pic{flex:0 0 46%;aspect-ratio:3/4;position:relative;border-radius:9px;overflow:hidden;border:1px solid rgba(168,128,31,.55);background:#efe3c6;}
+  .nsel-pic img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+  .nsel-thumb.on .nsel-pic::after{content:'✓';position:absolute;right:4px;top:4px;width:19px;height:19px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(180deg,#c0392b,#9a2d22);border:1px solid rgba(255,232,173,.9);color:#fff8d6;font-size:11px;font-weight:900;box-shadow:0 1px 4px rgba(0,0,0,.45);}
+  .nsel-tx{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;text-align:left;}
+  .nsel-tn{font-family:'Nanum Myeongjo',serif;font-weight:800;font-size:15px;color:#b5402f;line-height:1.2;}
+  .nsel-tt{font-size:10.5px;color:#8a6f3a;line-height:1.35;margin-top:4px;}
+  .nsel-cta{width:100%;min-height:56px;padding:15px 18px;border-radius:15px;border:1.5px solid #d8b24a;background:linear-gradient(180deg,#b23227 0%,#9c2820 42%,#6c1712 100%);color:#fff2c6;font-family:'Nanum Myeongjo',serif;font-weight:900;font-size:18px;letter-spacing:.01em;text-shadow:0 2px 10px rgba(0,0,0,.9);cursor:pointer;animation:sg-candle 2.8s ease-in-out infinite;}
+</style>
+
+<audio id="bgmA" src="배경음_선택.mp3" loop preload="auto"></audio><audio id="bgmB" src="배경음_풀이.mp3" loop preload="none"></audio>
+<input type="hidden" id="key"><input type="hidden" id="cat" value="재물">
+<span class="vis-hidden" id="dot"></span><span class="vis-hidden" id="statusText"></span>
+<button class="vis-hidden" id="gen"></button><div class="vis-hidden" id="personas"></div>
+<div class="vis-hidden" id="myeongsik"><div id="ms-grid"></div><div id="ms-meta"></div><div id="ms-daeun"></div></div>
+
+<div class="phone">
+  <!-- 선생님 선택 = 신명타로식 재구성: 상단 단청 + 페이드 히어로 + 2×2 선생님 카드 + CTA.
+       (옛 꽃 통이미지 select.png + feat-slide + sel-hots 방식은 폐기. buildNewSelect()가 채움) -->
+  <section class="screen active" id="s-select">
+    <div class="nsel">
+      <div class="nsel-crownwrap"><img class="nsel-crown" src="단청크라운.png" alt=""><div class="nsel-brand">반야사주</div></div>
+      <img class="nsel-hall" src="법당.png" alt="법당 삼존불">
+      <div class="nsel-hero">
+        <div class="nsel-slides" id="nsel-slides"></div>
+        <div class="nsel-shade"></div>
+        <div class="nsel-tap"><i></i><i></i><b></b></div>
+        <div class="nsel-cap">
+          <div class="nsel-name" id="nsel-name"></div>
+          <div class="nsel-career" id="nsel-career"></div>
+          <div class="nsel-intro" id="nsel-intro"></div>
+        </div>
+      </div>
+      <div class="nsel-thumbs" id="nsel-thumbs"></div>
+      <button class="nsel-cta" id="nsel-cta" type="button"></button>
+    </div>
+  </section>
+
+  <section class="screen imgscreen" id="s-office">
+    <img src="00-office.png" alt="상담실" onclick="toInput()" />
+    <div class="hot" style="left:5%;right:5%;bottom:8.5%;height:8%" onclick="toInput()"></div>
+  </section>
+
+  <section class="screen" id="s-officeT">
+    <div class="offT">
+      <button class="offback" onclick="goScreen('s-select')">‹</button>
+      <div id="officeT-body"></div>
+    </div>
+  </section>
+
+  <section class="screen" id="s-input">
+    <div class="fbg deco-screen" style="padding-top:88px">
+      <img class="deco-crown" src="입력_단청_투명.png" alt="">
+      <h1 class="ftitle">정보를 입력해주세요</h1>
+      <p class="fsub">정확한 상담을 위해, 사주를 펼칠 정보를 알려주세요.</p>
+      <img class="deco-divider" src="입력_연꽃줄_투명.png" alt="">
+      <div class="ff"><label>이름</label><input type="text" id="name" maxlength="20" placeholder="이름을 입력해주세요"></div>
+      <div class="ff"><label>성별</label><div class="two"><div class="gbtn" id="g-남" onclick="pick('gender','남')">남성</div><div class="gbtn" id="g-여" onclick="pick('gender','여')">여성</div></div></div>
+      <div class="ff"><label>달력</label><div class="two" style="margin-bottom:8px"><div class="gbtn on" id="c-solar" onclick="pick('cal','solar')">양력</div><div class="gbtn" id="c-lunar" onclick="pick('cal','lunar')">음력</div></div>
+        <label style="font-weight:400;font-size:12px;color:#6f6147"><input type="checkbox" id="leap" style="width:auto;margin-right:5px">윤달 (음력일 때만)</label></div>
+      <div class="ff"><label>생년월일 <span style="font-size:13px;font-weight:400;color:#9a8866">숫자 8자리 (예: 19830602)</span></label><input type="text" id="birth8" inputmode="numeric" maxlength="8" placeholder="19830602" autocomplete="off" oninput="birth8In(this)"><div style="display:none"><input type="number" id="year"><select id="month"></select><select id="day"></select></div></div>
+      <div class="ff"><label>태어난 시각</label><button type="button" class="sibox" id="sibox" onclick="siToggle()">눌러서 태어난 시를 골라주세요 ▾</button><div class="sigrid" id="sigrid"></div><div style="display:none"><input type="time" id="time"><input type="checkbox" id="unknown"></div></div>
+      <button class="bigcta" onclick="inputNext()">다음 ›</button>
+    </div>
+  </section>
+
+  <section class="screen imgscreen" id="s-category">
+    <img src="02-category.png" alt="카테고리 선택" />
+    <div id="cat-hots"></div>
+  </section>
+
+  <section class="screen imgscreen" id="s-object">
+    <img src="03-object.png" alt="사물 선택" />
+    <div id="obj-hots"></div>
+  </section>
+
+  <section class="screen" id="s-result">
+    <div class="rbg deco-screen" style="padding-top:88px">
+      <img class="deco-crown" src="입력_단청_투명.png" alt="">
+      <h1 class="ftitle" style="font-size:19px">정통 사주 풀이</h1>
+      <img class="deco-divider" src="입력_연꽃줄_투명.png" alt="">
+      <p class="rmeta" id="rmeta"></p>
+      <div id="reading"></div>
+      <button class="bigcta" style="margin-top:22px;background:#3a2a1d" onclick="goScreen('s-select')">처음으로</button>
+    </div>
+  </section>
+</div>
+
+<script>
+const MODELS=['deepseek-chat']; let usedModel=MODELS[0];
+let connected=false, persona='젊은스님', sel={gender:'',cal:'solar'};
+const CH_OH={갑:'목',을:'목',병:'화',정:'화',무:'토',기:'토',경:'금',신:'금',임:'수',계:'수'};
+const JI_OH={자:'수',축:'토',인:'목',묘:'목',진:'토',사:'화',오:'화',미:'토',신:'금',유:'금',술:'토',해:'수'};
+const CH_HJ={갑:'甲',을:'乙',병:'丙',정:'丁',무:'戊',기:'己',경:'庚',신:'辛',임:'壬',계:'癸'};
+const JI_HJ={자:'子',축:'丑',인:'寅',묘:'卯',진:'辰',사:'巳',오:'午',미:'未',신:'申',유:'酉',술:'戌',해:'亥'};
+const COLOR={청:'마음 둘 곳이 그리운',홍:'무언가를 강하게 원하는',황:'새로 시작하고 싶은',회:'한발 물러서 마음 닫은',백:'다 비우고 정리하고픈',자:'여리고 예민해진'};
+const TEX={거침:'자꾸 부딪혀 지친',매끄러움:'풍파 없길 바라는',딱딱함:'쉬이 열지 않는',부드러움:'다정함이 그리운'};
+const POS={섬:'버티고 선',누움:'지쳐 쉬고픈',기댐:'기댈 곳 찾는'};
+
+document.getElementById('month').innerHTML='<option value="">월</option>'+Array.from({length:12},(_,i)=>`<option>${i+1}</option>`).join('');
+document.getElementById('day').innerHTML='<option value="">일</option>'+Array.from({length:31},(_,i)=>`<option>${i+1}</option>`).join('');
+const SI=[['자시','23:30~01:30','00:30'],['축시','01:30~03:30','02:30'],['인시','03:30~05:30','04:30'],['묘시','05:30~07:30','06:30'],['진시','07:30~09:30','08:30'],['사시','09:30~11:30','10:30'],['오시','11:30~13:30','12:30'],['미시','13:30~15:30','14:30'],['신시','15:30~17:30','16:30'],['유시','17:30~19:30','18:30'],['술시','19:30~21:30','20:30'],['해시','21:30~23:30','22:30']];
+(function(){const g=document.getElementById('sigrid'); if(!g) return;
+  g.innerHTML=SI.map((x,i)=>'<button type="button" data-i="'+i+'"><b>'+x[0]+'</b><small>'+x[1]+'</small></button>').join('')+'<button type="button" class="unk" data-i="-1"><b>시간 모름</b></button>';
+  g.querySelectorAll('button').forEach(bt=>bt.onclick=()=>{const i=+bt.dataset.i, box=document.getElementById('sibox');
+    g.querySelectorAll('button').forEach(o=>o.classList.toggle('on',o===bt));
+    if(i<0){document.getElementById('time').value='';document.getElementById('unknown').checked=true;box.textContent='시간 모름 ▾';}
+    else{document.getElementById('time').value=SI[i][2];document.getElementById('unknown').checked=false;box.textContent=SI[i][0]+' ('+SI[i][1]+') ▾';}
+    box.classList.add('on'); g.classList.remove('open');});
+})();
+function siToggle(){document.getElementById('sigrid').classList.toggle('open');}
+function birth8In(el){
+  el.value=el.value.replace(/\D/g,'').slice(0,8);
+  const v=el.value, Y=document.getElementById('year'), M=document.getElementById('month'), D=document.getElementById('day');
+  Y.value='';M.value='';D.value='';
+  if(v.length!==8) return;
+  const y=+v.slice(0,4), m=+v.slice(4,6), d=+v.slice(6,8);
+  const ok=y>=1900&&y<=2100&&m>=1&&m<=12&&d>=1&&d<=new Date(y,m,0).getDate();
+  if(!ok) return;
+  Y.value=y; M.value=String(m); D.value=String(d);
+}
+function pick(k,v){sel[k]=v; if(k==='gender'){document.getElementById('g-남').classList.toggle('on',v==='남');document.getElementById('g-여').classList.toggle('on',v==='여');} if(k==='cal'){document.getElementById('c-solar').classList.toggle('on',v==='solar');document.getElementById('c-lunar').classList.toggle('on',v==='lunar');}}
+
+let SAJU=null, FACTS=null, META=null;
+async function computeSaju(){
+  const y=+document.getElementById('year').value, mo=+document.getElementById('month').value, d=+document.getElementById('day').value;
+  if(!y||!mo||!d){ alert('생년월일을 넣어주세요'); return; }
+  if(!sel.gender){ alert('성별을 골라주세요'); return; }
+  const unknown=document.getElementById('unknown').checked;
+  const t=document.getElementById('time').value;
+  let hour, minute;
+  if(!unknown && t){ const p=t.split(':'); hour=+p[0]; minute=+p[1]; }
+  const input={ y,mo,d,hour,minute, gender: sel.gender==='남'?'male':'female', calendar: sel.cal, isLeapMonth:document.getElementById('leap').checked };
+  try{ const r=await fetch('/api/saju',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)}); if(!r.ok) throw new Error('HTTP '+r.status); SAJU=await r.json(); }catch(e){ alert('계산 오류: '+e.message); return; }
+  META={ name:document.getElementById('name').value.trim()||'손님', gender: sel.gender, cal: sel.cal, y,mo,d, hour, unknown, cat:document.getElementById('cat').value,
+    birthInfo:`${sel.cal==='lunar'?'음력':'양력'} ${y}년 ${mo}월 ${d}일${unknown||hour===undefined?' (시 모름)':' '+String(hour).padStart(2,'0')+':'+String(minute||0).padStart(2,'0')}` };
+  FACTS=factsFromSaju(SAJU);
+  renderMyeongsik(SAJU);
+  document.getElementById('gen').disabled = !connected;
+}
+function factsFromSaju(s){
+  const P=s.fourPillars, fe=s.fiveElements;
+  const cnt={목:0,화:0,토:0,금:0,수:0};
+  const chars=[[P.year.gan,1],[P.year.ji,0],[P.month.gan,1],[P.month.ji,0],[P.day.gan,1],[P.day.ji,0]];
+  if(P.hour){chars.push([P.hour.gan,1],[P.hour.ji,0]);}
+  chars.forEach(c=>{const oh=c[1]?CH_OH[c[0]]:JI_OH[c[0]]; if(oh)cnt[oh]++;});
+  const ohaengCount='목'+cnt.목+'개 화'+cnt.화+'개 토'+cnt.토+'개 금'+cnt.금+'개 수'+cnt.수+'개';
+  const en=Object.entries(cnt).sort((a,b)=>b[1]-a[1]);
+  const strong=en[0][0], weak=en[en.length-1][0];
+  const strongList=en.filter(e=>e[1]>=2).map(e=>e[0]+'('+e[1]+'개)').join(', ')||en[0][0]+'('+en[0][1]+'개)';
+  const weakList=en.filter(e=>e[1]===0).map(e=>e[0]).join(', ')||en[en.length-1][0];
+  const yong=s.yongsinGisin&&s.yongsinGisin.yongsin||'';
+  const tg=s.tenGods||{}; const sx=p=>p?((p.gan||'')+'/'+(p.ji||'')):'(시 모름)';
+  const sipsin='년 '+sx(tg.year)+' · 월 '+sx(tg.month)+' · 일 '+sx(tg.day)+' · 시 '+sx(tg.hour);
+  const _ss=[];
+  ['year','month','day','hour'].forEach(k=>{const a=s.extendedSinsal&&s.extendedSinsal[k]; if(Array.isArray(a))a.forEach(x=>_ss.push(String(x).replace(/\s*\(.*\)\s*/,'').trim()));});
+  (s.sinsal||[]).forEach(x=>_ss.push(String(x).replace(/\s*\(.*\)\s*/,'').trim()));
+  if(s.gongmang&&s.gongmang.length)_ss.push('공망');
+  const _sc={}; _ss.forEach(n=>{if(n)_sc[n]=(_sc[n]||0)+1;});
+  const sinsal=Object.entries(_sc).sort((a,b)=>b[1]-a[1]).map(e=>e[1]>1?e[0]+'×'+e[1]+'개':e[0]).join(', ')||'두드러진 살 없음';
+  const ilju=P.day.gan+P.day.ji;
+  const _gj=[['년',P.year],['월',P.month],['일',P.day]]; if(P.hour)_gj.push(['시',P.hour]);
+  const ganyeojidong=_gj.filter(x=>CH_OH[x[1].gan]===JI_OH[x[1].ji]).map(x=>x[0]+'주('+x[1].gan+x[1].ji+')').join(', ')||'없음';
+  const yongDae=s.daeun.filter(x=>CH_OH[x.gan]===yong||JI_OH[x.ji]===yong).map(x=>x.startAge+'세 '+x.gan+x.ji).join(', ')||'대운 중 용신 약함';
+  return { myeongsik:`년주 ${P.year.gan}${P.year.ji} · 월주 ${P.month.gan}${P.month.ji} · 일주 ${P.day.gan}${P.day.ji} · 시주 ${P.hour?P.hour.gan+P.hour.ji:'(시 모름)'}`,
+    ilgan:`${P.day.gan}(${CH_OH[P.day.gan]})`, gangyak:(s.dayMasterStrength&&s.dayMasterStrength.level)||'-',
+    ohaeng:ohaengCount, strong, weak, strongList, weakList, cntObj:cnt, yongsin:yong, yongDae, sipsin, sinsal, ilju, ganyeojidong };
+}
+function cell(lab,p,isSelf){ if(!p) return `<div class="pil"><div class="lab">${lab}</div><div class="gan">·</div><div class="ji">·</div></div>`;
+  return `<div class="pil${isSelf?' self':''}"><div class="lab">${lab}</div><div class="gan e-${CH_OH[p.gan]}">${CH_HJ[p.gan]||p.gan}</div><div class="ji e-${JI_OH[p.ji]}">${JI_HJ[p.ji]||p.ji}</div></div>`; }
+function renderMyeongsik(s){
+  const P=s.fourPillars;
+  document.getElementById('ms-grid').innerHTML = cell('자식 자리',P.hour)+cell('나',P.day,true)+cell('부모 자리',P.month)+cell('조상 자리',P.year);
+  const C=FACTS.cntObj||{목:0,화:0,토:0,금:0,수:0}, OHC={목:'#2e8b57',화:'#c0392b',토:'#a8801f',금:'#7a7a72',수:'#2c3a52'}, mx=Math.max(1,C.목,C.화,C.토,C.금,C.수);
+  const bars=['목','화','토','금','수'].map(e=>'<div style="text-align:center;flex:1"><div style="height:48px;display:flex;align-items:flex-end;justify-content:center"><div style="width:55%;background:'+OHC[e]+';height:'+Math.round(C[e]/mx*100)+'%;min-height:3px;border-radius:3px 3px 0 0"></div></div><div style="font-family:var(--serif);font-size:13px;color:'+OHC[e]+';margin-top:3px">'+e+' '+C[e]+'</div></div>').join('');
+  document.getElementById('ms-meta').innerHTML = '<div style="display:flex;gap:6px;margin:8px 2px 13px">'+bars+'</div>일간 <b>'+FACTS.ilgan+'</b> · 강약 <b>'+FACTS.gangyak+'</b> · 용신 <b>'+FACTS.yongsin+'</b>';
+  document.getElementById('ms-daeun').innerHTML = '대운 ' + s.daeun.map(d=>`${d.startAge} ${d.gan}${d.ji}`).join(' · ');
+  document.getElementById('myeongsik').style.display='block';
+}
+
+const P={'큰스님':{sub:''},'젊은스님':{sub:''},'선승':{sub:''},'스님':{sub:''}};
+let selectedObj='연꽃';
+
+// 운영자 전용 주소(?pass=…)로 들어오면 이 기기에 기억해 유료 풀이를 볼 수 있게 한다
+function opPass(){ try{ const u=new URL(location.href), v=u.searchParams.get('pass'); if(v){ localStorage.setItem('op_pass',v); u.searchParams.delete('pass'); history.replaceState(null,'',u); } return localStorage.getItem('op_pass')||''; }catch(e){ return ''; } }
+async function callGemini(req){ // 이름은 그대로 두고 속만 딥시크 — 풀이 지침은 서버에서 만든다
+  const r=await fetch('/api/deepseek',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...req,persona,obj:selectedObj,facts:FACTS,meta:META,pass:opPass()})});
+  if(!r.ok) throw new Error('HTTP '+r.status+' '+(await r.text()).slice(0,160));
+  const d=await r.json(); return d?.choices?.[0]?.message?.content||'(빈 응답)';
+}
+function setStatus(st,msg){ document.getElementById('dot').className='dot '+st; document.getElementById('statusText').textContent=msg; connected=(st==='on'); document.getElementById('gen').disabled=!(connected&&FACTS); }
+async function checkConn(){ setStatus('wait','연결 확인 중…'); try{ const r=await fetch('/api/deepseek',{method:'POST',headers:{'Content-Type':'application/json'},body:'{"kind":"ping"}'}); if(!r.ok) throw new Error('HTTP '+r.status); setStatus('on','🟢 연결됨'); }catch(e){ setStatus('off','연결 실패: '+e.message); } }
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+function paywallTemplate(){
+  const cat=esc((META&&META.cat)||'재물'), nm=esc((META&&META.name)||'손님');
+  return '<div class="paywall"><p class="pw-say">정성 들이면, 그 깊은 곳까지 짚어드릴게요.<br/>어느 문을 여시겠어요.</p><div class="doors">'
+    +'<div class="door"><div class="dn">첫 번째 문 <small>지금 이 고민</small></div><ul class="dl"><li>왜 지금 막혔는지 — 사주로 콕</li><li>'+cat+'운이 <b>언제 트이는지</b> · 정확한 시기</li><li>막힌 걸 뚫는 <b>개운법</b></li><li>평생 '+cat+' 흐름 · 조심할 시기 · 행운 포인트</li></ul><div class="price">9,900원</div>'+(opPass()?'<button onclick="openPaid(1)" style="margin-top:10px;width:100%;padding:9px;border:none;border-radius:8px;background:#b8860b;color:#fff;font-weight:700;cursor:pointer">이 문 열기 ›</button>':'<button disabled style="margin-top:10px;width:100%;padding:9px;border:none;border-radius:8px;background:#8d8577;color:#fff;font-weight:700;font-size:15px">🔒 결제 준비 중</button>')+'</div>'
+    +'<div class="door"><div class="dn">두 번째 문 <small>올 한 해 전체</small></div><ul class="dl"><li>첫 번째 문 전부 +</li><li>애정·직업·건강운까지</li><li>올해 열두 달 흐름</li></ul><div class="price">19,900원</div>'+(opPass()?'<button onclick="openPaid(2)" style="margin-top:10px;width:100%;padding:9px;border:none;border-radius:8px;background:#b8860b;color:#fff;font-weight:700;cursor:pointer">이 문 열기 ›</button>':'<button disabled style="margin-top:10px;width:100%;padding:9px;border:none;border-radius:8px;background:#8d8577;color:#fff;font-weight:700;font-size:15px">🔒 결제 준비 중</button>')+'</div>'
+    +'<div class="door best"><div class="badge">가장 깊은 문</div><div class="dn">세 번째 문 <small>평생 · 뿌리</small></div><ul class="dl"><li>평생사주 전체 · 모든 운 종합</li><li>평생 대운 지도 + 열두 달</li><li><b>본관풀이</b> — 내 뿌리·조상·자긍심</li></ul><div class="price">39,000원</div>'+(opPass()?'<button onclick="openPaid(3)" style="margin-top:10px;width:100%;padding:9px;border:none;border-radius:8px;background:#b8860b;color:#fff;font-weight:700;cursor:pointer">이 문 열기 ›</button>':'<button disabled style="margin-top:10px;width:100%;padding:9px;border:none;border-radius:8px;background:#8d8577;color:#fff;font-weight:700;font-size:15px">🔒 결제 준비 중</button>')+'</div>'
+    +'</div></div>';
+}
+async function openPaid(tier){
+  const area=document.getElementById('paid-area'); if(!area) return;
+  if(!connected){ area.innerHTML='<div class="loadbox">연결이 안 됐어요. 잠시 뒤 다시 시도해 주세요.</div>'; return; }
+  area.innerHTML='<div class="loadbox">유료 '+tier+'번 문 펼치는 중…</div>';
+  try{
+    const txt=await callGemini({kind:'paid',tier});
+    area.innerHTML='<div class="paidtest-label">▼ (테스트) 유료 '+tier+'번 문 풀이</div><div class="paid-read">'+renderFree(txt,true)+'</div>';
+    rdWatch();
+    area.scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){ area.innerHTML='<div class="loadbox">'+(/HTTP 403/.test(e.message)?'결제 준비 중이에요. 곧 열어 드릴게요.':'오류: '+esc(e.message))+'</div>'; }
+}
+function sajuChartHTML(){
+  if(typeof SAJU==='undefined'||!SAJU||!SAJU.fourPillars) return '';
+  const P=SAJU.fourPillars;
+  return '<div class="ms-chart">'+cell('자식 자리',P.hour)+cell('나',P.day,true)+cell('부모 자리',P.month)+cell('조상 자리',P.year)+'</div>';
+}
+const OH_HJ={목:'木',화:'火',토:'土',금:'金',수:'水'};
+function ohaengGraphHTML(){
+  const C=FACTS&&FACTS.cntObj; if(!C) return '';
+  const OHC={목:'#2e8b57',화:'#c0392b',토:'#a8801f',금:'#7a7a72',수:'#2c3a52'}, mx=Math.max(1,C.목,C.화,C.토,C.금,C.수);
+  const bars=['목','화','토','금','수'].map(e=>'<div class="ohb"><div class="ohb-bar-wrap"><div class="ohb-bar" style="background:'+OHC[e]+';height:'+Math.round(C[e]/mx*100)+'%"></div></div><div class="ohb-lab" style="color:'+OHC[e]+'">'+OH_HJ[e]+' '+e+' '+C[e]+'</div></div>').join('');
+  return '<div class="oh-graph">'+bars+'</div>';
+}
+// 풀이 제목마다 공통 그림을 돌아가며 넣는다. 시작 그림은 무작위, 한 번 그릴 때 8장까지(겹침 없음)
+const RD_N=24; let rdI=Math.floor(Math.random()*RD_N);
+const rdImg=c=>{const n=rdI++%RD_N+1;return '<video class="rd-img'+c+'" src="풀이영상'+n+'.mp4" poster="풀이그림'+n+'.jpg" muted loop playsinline preload="none"></video>';};
+// 보이는 영상만 돌리고 안 보이면 멈춘다(폰 부담 줄이기)
+const rdIO=('IntersectionObserver' in window)?new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){v.muted=true;const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{});}else v.pause();}),{rootMargin:'120px'}):null;
+function rdWatch(){document.querySelectorAll('video.rd-img').forEach(v=>{if(v.dataset.w)return;v.dataset.w=1;if(rdIO)rdIO.observe(v);else{v.autoplay=true;v.play().catch(()=>{});}});}
+// 긴 본문은 문단 3개마다 그림을 한 장 더 끼운다
+function rdBody(t,paid){ const ps=t.split(/\n+/).filter(x=>x.trim()); const step=paid?3:99; let h=''; for(let i=0;i<ps.length;i+=step){ if(i) h+=rdImg(' mid'); h+='<div class="rd-body">'+esc(ps.slice(i,i+step).join('\n\n'))+'</div>'; } return h; }
+function renderFree(free,paid){
+  const parts=free.split(/(?=【)/);
+  let html='';
+  parts.forEach(seg=>{
+    const m=seg.match(/^【\s*(.+?)\s*】([\s\S]*)$/);
+    if(m){
+      html+=rdImg('');
+      html+='<div class="rd-head">'+esc(m[1])+'</div>';
+      if(/만세력|타고난 사주/.test(m[1])) html+=sajuChartHTML();
+      if(/오행/.test(m[1])) html+=ohaengGraphHTML();
+      const b=m[2].trim(); if(b) html+=rdBody(b,paid);
+    } else if(seg.trim()){ html+=rdBody(seg.trim(),paid); }
+  });
+  return html;
+}
+function renderReading(txt){
+  const out=document.getElementById('reading');
+  const s=txt.indexOf('[BLIND_START]'), e=txt.indexOf('[BLIND_END]');
+  let free = s!==-1 ? txt.slice(0,s) : txt;
+  let paid = s!==-1 ? (e!==-1 ? txt.slice(s+13,e) : txt.slice(s+13)) : '';
+  const all = free+'\n'+paid+'\n'+(e!==-1?txt.slice(e+11):'');
+  const fm = all.match(/\[후속질문\]([\s\S]*?)(?:\[후속질문끝\]|$)/);
+  const fu = fm ? fm[1].trim() : '';
+  const strip=t=>t.replace(/\[후속질문\][\s\S]*/,'').replace(/\[후속질문끝\]/,'').trim();
+  const tidy=t=>t.replace(/【\s*끝맺음[^】]*】/g,'【 맺음 말씀 】').replace(/신년운세운/g,'신년운세');
+  free=tidy(strip(free)); paid=tidy(strip(paid));
+  out.innerHTML = '<div class="free-read">'+renderFree(free)+'</div>'
+    + paywallTemplate().replace(/신년운세운/g,'신년운세')
+    + '<div id="paid-area"></div>'
+    + (fu ? '<div class="fudiv">— 후속질문 —</div><div class="fu">'+esc(tidy(fu))+'</div>' : '');
+  rdWatch();
+}
+async function generate(){ if(!FACTS){alert('먼저 [사주 계산]을 눌러주세요');return;} const out=document.getElementById('reading'); out.textContent='사주 펼치는 중… (딥시크)'; try{ renderReading(await callGemini({kind:'free'})); }catch(e){ out.textContent='오류: '+e.message; } }
+
+const pg=document.getElementById('personas');
+Object.keys(P).forEach(k=>{const b=document.createElement('div');b.className='pbtn'+(k===persona?' on':'');b.innerHTML=k+'<small>'+P[k].sub+'</small>';b.onclick=()=>{persona=k;document.querySelectorAll('.pbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');};pg.appendChild(b);});
+function goScreen(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+// 배경음: 처음(스님 고르기~사물 고르기)은 염불, 풀이 화면부터는 운영자가 준 곡. 🔊 단추로 끄고 켬
+let bgmOn=true, bgmCur='A';
+function bgmWant(){ return ['s-category','s-object','s-result'].some(i=>document.getElementById(i).classList.contains('active'))?'B':'A'; }
+function bgmSync(){ const A=document.getElementById('bgmA'),B=document.getElementById('bgmB'); if(!A||!B) return; const w=bgmWant();
+  if(w!==bgmCur){ (w==='A'?B:A).pause(); bgmCur=w; }
+  const cur=(w==='A'?A:B), oth=(w==='A'?B:A); oth.pause(); cur.volume=0.35;
+  if(bgmOn){ const pr=cur.play(); if(pr&&pr.catch) pr.catch(()=>{}); } else cur.pause(); }
+const _goScreen=goScreen; goScreen=function(id){ _goScreen(id); bgmSync(); };
+const TEACHERS=[
+  {key:'큰스님',name:'법운 큰스님',title:'업과 인연으로 보는 사주',exp:'수행 60년',img:'큰스님네모.png',video:'큰스님인사.mp4',slide:'큰스님슬라이드.png',feat:true,ready:true,bullets:['사주를 업(業)과 인연의 지도로 읽어드린다','경전 말씀으로 짚는 묵직한 법문 한마디','겁주지 않고 갈 길을 밝히는 노승의 자비']},
+  {key:'젊은스님',name:'도현스님',title:'사주 & 현실 고민 상담',sub:'밝고 편안한 요즘 스님',img:'젊은스님네모.png',video:'젊은스님인사.mp4',slide:'젊은스님슬라이드.png',ready:true,bullets:['어려운 불교 말 대신 쉬운 말로 풀어드려요','직장·연애·돈 같은 현실 고민에 바로 쓰는 조언','마음이 가벼워지는 편안한 상담']},
+  {key:'선승',name:'혜공선사',title:'참선 & 사주 상담',sub:'한마디로 마음을 비추는 선승',img:'선승네모.png',video:'선승인사.mp4',slide:'선승슬라이드.png',ready:true,bullets:['사주 속 집착과 번뇌의 뿌리를 곧장 짚는다','화두처럼 던지는 짧고 날카로운 한마디','내려놓음으로 길을 여는 선(禪)의 지혜']},
+  {key:'스님',name:'해원스님',title:'사주 & 마음 인생 상담',sub:'마음의 평안과 삶의 지혜',img:'스님네모.png',video:'스님인사.mp4',slide:'스님슬라이드.png',ready:true,bullets:['마음의 상처부터 다독이는 따뜻한 상담','사주 흐름을 삶의 지혜로 풀어드려요','기도·발원으로 여는 개운의 길']},
+];
+// 신명식 선생님 선택 — 페이드 히어로 + 2×2 카드. 진짜 선생님 이름/사진으로.
+function buildNewSelect(){
+  const DISP={
+    // face=카드용 얼굴 크롭(크게), hero=큰 슬라이드용 원본, pos=히어로 얼굴 위치(선생님별)
+    // intro=히어로 밑 소개글(초안 — 운영자가 숫자/문구 수정 가능). 박사·스님은 히어로를 얼굴크롭으로(더 크게·위로)
+    '큰스님': {name:'법운 큰스님', career:'수행 60년 노승의 업과 인연 풀이', tag:'60년 수행 노승', intro:'전생 업과 이생 복을 꿰뚫는 묵직한 법문', face:'큰스님얼굴.png', hero:'큰스님네모.png', pos:'50% 20%'},
+    '젊은스님':{name:'도현스님', career:'요즘 세상을 아는 젊은 스님의 사주 상담',  tag:'밝고 편안한 요즘 스님', intro:'직장·연애·돈 고민, 부처님 지혜로 쉽게 풀어드려요', face:'젊은스님얼굴.png', hero:'젊은스님네모.png', pos:'50% 24%'},
+    '선승':   {name:'혜공선사', career:'참선 30년 선승의 직관 풀이',       tag:'참선·한마디로 비추는 선승', intro:'군더더기 없는 한마디로 집착과 번뇌의 뿌리를 비춘다', face:'선승얼굴.png', hero:'선승네모.png', pos:'50% 24%'},
+    '스님':   {name:'해원스님', career:'수행 40년 비구니 스님의 마음 상담',      tag:'마음·인생 상담',  intro:'지친 마음을 어루만지고 다시 일어설 힘을 드려요', face:'스님얼굴.png', hero:'스님얼굴.png', pos:'50% 30%'},
+  };
+  const order=['큰스님','젊은스님','선승','스님'];
+  const list=order.filter(k=>DISP[k]).map(k=>({key:k,...DISP[k]}));
+  const slidesEl=document.getElementById('nsel-slides');
+  const thumbs=document.getElementById('nsel-thumbs');
+  const nmEl=document.getElementById('nsel-name'),carEl=document.getElementById('nsel-career'),introEl=document.getElementById('nsel-intro'),cta=document.getElementById('nsel-cta');
+  if(!slidesEl||!thumbs||!cta) return;
+  list.forEach(t=>{const T=TEACHERS.find(x=>x.key===t.key);if(T&&T.video)t.video=T.video;});
+  slidesEl.innerHTML=list.map((t,i)=>'<div class="nsel-slide'+(i===0?' on':'')+'">'+(t.video?'<video src="'+t.video+'" poster="'+t.hero+'" muted playsinline preload="auto" style="object-position:'+t.pos+'"></video>':'<img src="'+t.hero+'" alt="'+t.name+'" style="object-position:'+t.pos+'">')+'</div>').join('');
+  thumbs.innerHTML=list.map((t,i)=>'<div class="nsel-thumb'+(i===0?' on':'')+'"><div class="nsel-pic"><img src="'+t.face+'" alt=""></div><div class="nsel-tx"><div class="nsel-tn">'+t.name+'</div><div class="nsel-tt">'+t.tag+'</div></div></div>').join('');
+  const slides=slidesEl.querySelectorAll('.nsel-slide'),ths=thumbs.querySelectorAll('.nsel-thumb');
+  let cur=0,auto=true;
+  const render=n=>{slides[cur].classList.remove('on');ths[cur].classList.remove('on');cur=n;slides[cur].classList.add('on');ths[cur].classList.add('on');nmEl.textContent=list[cur].name;carEl.textContent=list[cur].career;if(introEl)introEl.textContent=list[cur].intro||'';var hon=list[cur].name.slice(-1)==='님'?list[cur].name:list[cur].name+'님';cta.textContent=hon+'께 무료 사주 보기';};
+  let tmr=null;
+  const play=()=>{clearTimeout(tmr);slides.forEach((sl,i)=>{const v=sl.querySelector('video');if(v&&i!==cur){v.pause();v.onended=null;}});
+    const v=slides[cur].querySelector('video');
+    if(v){v.currentTime=0;v.onended=()=>{if(auto){render((cur+1)%list.length);play();}};const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{tmr=setTimeout(()=>{if(auto){render((cur+1)%list.length);play();}},2600);});}
+    else tmr=setTimeout(()=>{if(auto){render((cur+1)%list.length);play();}},2600);};
+  render(0); play();
+  ths.forEach((el,i)=>el.onclick=()=>{auto=false;render(i);play();});
+  cta.onclick=()=>selTeacher(list[cur].key);
+}
+function buildFeatSlide(){
+  const el=document.getElementById('feat-slide'); if(!el) return;
+  el.innerHTML=TEACHERS.map((t,i)=>'<div class="fs-slide'+(i===0?' on':'')+'"><img src="'+(t.slide||t.img)+'" alt="'+t.name+'"></div>').join('')
+    +'<div class="fs-dots">'+TEACHERS.map((t,i)=>'<i class="'+(i===0?'on':'')+'"></i>').join('')+'</div>';
+  const slides=el.querySelectorAll('.fs-slide'),dots=el.querySelectorAll('.fs-dots i');
+  let cur=0;
+  const show=n=>{slides[cur].classList.remove('on');dots[cur].classList.remove('on');cur=n;slides[cur].classList.add('on');dots[cur].classList.add('on');};
+  setInterval(()=>show((cur+1)%TEACHERS.length),2500);
+  el.onclick=()=>selTeacher(TEACHERS[cur].key);
+}
+function buildGate(){
+  const stage=document.getElementById('sg-stage'),thumbs=document.getElementById('sg-thumbs');
+  const nm=document.getElementById('sg-name'),cr=document.getElementById('sg-career'),cta=document.getElementById('sg-cta');
+  const short={'큰스님':'큰스님','젊은스님':'젊은스님','선승':'선승','스님':'해원스님'};
+  stage.innerHTML=TEACHERS.map((t,i)=>'<div class="sg-slide'+(i===0?' active':'')+'"><img src="'+t.img+'" alt=""></div>').join('');
+  thumbs.innerHTML=TEACHERS.map(t=>'<div class="sg-thumb"><div class="sg-pic"><img src="'+t.img+'" alt=""></div><div class="sg-lbl">'+(short[t.key]||t.name)+'</div><div class="sg-tag">'+(t.sub||t.exp||'')+'</div></div>').join('');
+  const slides=stage.querySelectorAll('.sg-slide'),ths=thumbs.querySelectorAll('.sg-thumb');
+  let cur=-1,auto=true;
+  const render=n=>{ if(cur>=0){slides[cur].classList.remove('active');ths[cur].classList.remove('on');} cur=n; slides[cur].classList.add('active');ths[cur].classList.add('on'); nm.textContent=TEACHERS[cur].name; cr.textContent=TEACHERS[cur].title; };
+  render(0);
+  setInterval(()=>{ if(auto) render((cur+1)%TEACHERS.length); },2000);
+  ths.forEach((el,i)=>el.onclick=()=>{ auto=false; render(i); });
+  cta.onclick=()=>selTeacher(TEACHERS[cur].key);
+}
+function selTeacher(key){ const t=TEACHERS.find(x=>x.key===key); if(!t) return; if(!t.ready){ alert(t.name+' 선생님은 곧 만나요 🙏 (준비 중)'); return; } persona=key; renderOfficeT(t); goScreen('s-officeT'); }
+function renderOfficeT(t){
+  document.getElementById('officeT-body').innerHTML =
+    '<div class="offhero">'+(t.video?'<video src="'+t.video+'" poster="'+t.img+'" autoplay loop muted playsinline preload="auto"></video>':'<img src="'+t.img+'" alt="">')+'<div class="ov"><div class="nm">'+t.name+'</div><div class="tt">'+t.title+'</div></div></div>'
+   +'<div class="offbody"><div class="offfeat"><h3>스님의 상담</h3><ul>'
+   +(t.bullets||[t.sub||'깊이 있는 정통 사주 해석']).map(b=>'<li>'+b+'</li>').join('')
+   +'</ul></div>'
+   +'<button class="bigcta" style="margin-top:18px" onclick="toInput()">무료 사주 보기 ›</button>'
+   +'<p style="text-align:center;color:#9a8866;font-size:11px;margin-top:13px">한 가지 고민, 무료로 사주를 펼쳐드려요</p></div>';
+  const ov=document.querySelector('#officeT-body .offhero video'); if(ov){ ov.muted=true; ov.currentTime=0; const pr=ov.play(); if(pr&&pr.catch) pr.catch(()=>{}); }
+}
+function toInput(){ goScreen('s-input'); }
+function inputNext(){
+  if(!document.getElementById('name').value.trim()){alert('이름을 입력해주세요');return;}
+  if(!sel.gender){alert('성별을 골라주세요');return;}
+  const y=+document.getElementById('year').value,mo=document.getElementById('month').value,d=document.getElementById('day').value;
+  if(!(y>=1900&&mo&&d)){alert('생년월일을 입력해주세요');return;}
+  goScreen('s-category');
+}
+function selCat(c){ document.getElementById('cat').value=c; goScreen('s-object'); }
+function selObj(o){ selectedObj=o; goScreen('s-result'); runReading(); }
+async function runReading(){
+  const out=document.getElementById('reading');
+  await computeSaju();
+  if(!FACTS){ out.innerHTML='<div class="loadbox">사주 계산에 문제가 생겼어요.<br/>생년월일·성별을 다시 확인해주세요.</div>'; return; }
+  document.getElementById('rmeta').innerHTML=(META.name||'손님')+' 님 · <b>'+(META.cat||'')+'</b> · '+esc(META.birthInfo||'');
+  out.innerHTML='<div class="loadbox">선생님이 '+esc(META.name||'')+'님의 사주를 펼치는 중…<br/><span style="font-size:13px;color:#a8966f">잠시만 기다려 주세요</span></div>';
+  if(!connected){ out.innerHTML='<div class="loadbox">연결이 안 됐어요. 잠시 뒤 다시 시도해 주세요.</div>'; return; }
+  try{ renderReading(await callGemini({kind:'free'})); }
+  catch(e){ out.innerHTML='<div class="loadbox">오류: '+esc(e.message)+'</div>'; }
+}
+(function(){
+  buildNewSelect();
+  const mb=document.createElement('button'); mb.textContent='🔊'; mb.title='배경음악 켜기/끄기';
+  mb.style.cssText='position:fixed;top:10px;right:10px;z-index:99;background:rgba(58,42,29,.88);color:#e8dcc0;border:none;border-radius:50%;width:38px;height:38px;font-size:16px;cursor:pointer';
+  mb.onclick=()=>{ bgmOn=!bgmOn; mb.textContent=bgmOn?'🔊':'🔇'; bgmSync(); }; document.body.appendChild(mb);
+  window.addEventListener('pointerdown', ()=>{ bgmSync(); }, {once:true}); bgmSync();
+  const L=['5%','36%','67%'],T=['22%','36.5%','51%'];
+  const cats=[['연애',0,0],['재회',0,1],['재물',0,2],['사업',1,0],['직업',1,1],['건강',1,2],['가족',2,0],['자녀',2,1],['이사',2,2]];
+  const cg=document.getElementById('cat-hots');
+  // 분야 칸: 그림 속 작은 글자 대신 큰 글자 칸을 그림의 같은 자리에 얹음(그림표는 원래 그림에서 오려 씀)
+  const CL=['5%','36.1%','67.2%'],CT=['24.4%','41.9%','59.3%'];
+  const CD={연애:['연애','새로운 인연·연애운·짝사랑'],재회:['재회','헤어진 연인과의 재회 가능성'],재물:['금전','재물운·수입·투자'],사업:['사업','창업·사업운·성공과 발전'],직업:['직장','직장운·승진·이직'],건강:['건강','건강운·질병·마음 건강'],가족:['가족','가족관계·부모님·형제자매'],자녀:['자녀','자녀운·학업운·진로'],이사:['이사','이사운·이사 방향·새 출발']};
+  cg.classList.add('catlay');
+  cats.forEach(c=>{const d=CD[c[0]];const h=document.createElement('div');h.className='catcard';h.style.cssText='left:'+CL[c[2]]+';top:'+CT[c[1]]+';width:27.8%;height:15.9%';h.innerHTML='<b>'+d[0]+'</b><img src="분야아이콘/'+d[0]+'.png" alt=""><small>'+d[1]+'</small>';h.onclick=()=>selCat(c[0]);cg.appendChild(h);});
+  [['신년운세','신년운세','다가오는 새해 한 해의 운','5%'],['종합','종합','전반적인 운세와 흐름','50%']].forEach(x=>{const z=document.createElement('div');z.className='catcard catwide';z.style.cssText='left:'+x[3]+';top:76.3%;width:45%;height:8.1%';z.innerHTML='<img src="분야아이콘/'+x[0]+'.png" alt=""><span><b>'+x[1]+'</b><small>'+x[2]+'</small></span>';z.onclick=()=>selCat(x[0]);cg.appendChild(z);});
+  const OL=['4%','27%','50%','73%'],OT=['30%','59%'];
+  const objs=[['연꽃',0,0],['촛불',0,1],['염주',0,2],['두루마리',0,3],['부채',1,0],['거울',1,1],['도장',1,2],['복주머니',1,3]];
+  const og=document.getElementById('obj-hots');
+  objs.forEach(o=>{const h=document.createElement('div');h.className='hot';h.style.cssText='left:'+OL[o[2]]+';top:'+OT[o[1]]+';width:22%;height:27%';h.onclick=()=>selObj(o[0]);og.appendChild(h);});
+  checkConn();
+})();
+</script>
+</body>
+</html>
